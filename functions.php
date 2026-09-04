@@ -62,7 +62,7 @@ add_action( 'wp_enqueue_scripts', 'trs_assets' );
  * Appearance → Menus.
  */
 function trs_fallback_menu() {
-	echo '<ul class="primary-nav__menu" id="primary-menu">';
+	echo '<ul class="primary-nav__links">';
 	echo '<li' . ( is_front_page() ? ' class="current-menu-item"' : '' ) . '><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', '3rspace' ) . '</a></li>';
 
 	$contact_page = get_page_by_path( 'contact' );

@@ -28,27 +28,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</p>
 
 		<nav class="primary-nav" aria-label="<?php esc_attr_e( 'Primary', '3rspace' ); ?>">
-			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'primary',
-				'container'      => false,
-				'menu_class'     => 'primary-nav__menu',
-				'menu_id'        => 'primary-menu',
-				'fallback_cb'    => 'trs_fallback_menu',
-			) );
-			?>
-			<div class="site-header__actions">
-				<button type="button" class="btn btn-outline js-open-apply-modal">
-					<?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?>
-				</button>
-				<button type="button" class="btn btn-primary js-open-trial-modal">
-					<?php echo esc_html( trs_opt( 'trial_button_label' ) ); ?>
-				</button>
-				<button type="button" class="nav-toggle" aria-controls="primary-menu" aria-expanded="false">
-					<span class="screen-reader-text"><?php esc_html_e( 'Menu', '3rspace' ); ?></span>
-					<span></span><span></span><span></span>
-				</button>
+			<div class="primary-nav__menu" id="primary-menu">
+				<?php
+				wp_nav_menu( array(
+					'theme_location' => 'primary',
+					'container'      => false,
+					'menu_class'     => 'primary-nav__links',
+					'fallback_cb'    => 'trs_fallback_menu',
+				) );
+				?>
+				<div class="primary-nav__cta">
+					<button type="button" class="btn btn-outline js-open-apply-modal">
+						<?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?>
+					</button>
+					<button type="button" class="btn btn-primary js-open-trial-modal">
+						<?php echo esc_html( trs_opt( 'trial_button_label' ) ); ?>
+					</button>
+				</div>
 			</div>
+			<button type="button" class="nav-toggle" aria-controls="primary-menu" aria-expanded="false">
+				<span class="screen-reader-text"><?php esc_html_e( 'Menu', '3rspace' ); ?></span>
+				<span></span><span></span><span></span>
+			</button>
 		</nav>
 	</div>
 </header>
