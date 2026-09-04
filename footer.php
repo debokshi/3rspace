@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					) );
 					?>
 					<li><button type="button" class="js-open-apply-modal" style="background:none;border:0;padding:0;text-align:left;color:inherit;"><?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?></button></li>
+					<li><button type="button" class="js-open-trial-modal" style="background:none;border:0;padding:0;text-align:left;color:inherit;"><?php echo esc_html( trs_opt( 'trial_button_label' ) ); ?></button></li>
 				</ul>
 			</div>
 
@@ -50,6 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 </footer>
 
 <?php get_template_part( 'template-parts/modal-apply' ); ?>
+<?php get_template_part( 'template-parts/modal-trial' ); ?>
 
 <?php wp_footer(); ?>
 </body>

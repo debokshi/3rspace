@@ -38,8 +38,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			) );
 			?>
 			<div class="site-header__actions">
-				<button type="button" class="btn btn-primary js-open-apply-modal">
+				<button type="button" class="btn btn-outline js-open-apply-modal">
 					<?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?>
+				</button>
+				<button type="button" class="btn btn-primary js-open-trial-modal">
+					<?php echo esc_html( trs_opt( 'trial_button_label' ) ); ?>
 				</button>
 				<button type="button" class="nav-toggle" aria-controls="primary-menu" aria-expanded="false">
 					<span class="screen-reader-text"><?php esc_html_e( 'Menu', '3rspace' ); ?></span>

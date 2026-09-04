@@ -51,6 +51,7 @@ function trs_assets() {
 	wp_localize_script( 'trs-main', 'TRS', array(
 		'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
 		'applyNonce'   => wp_create_nonce( 'trs_apply_submit' ),
+		'trialNonce'   => wp_create_nonce( 'trs_trial_submit' ),
 		'contactNonce' => wp_create_nonce( 'trs_contact_submit' ),
 	) );
 }
@@ -140,6 +141,51 @@ function trs_handle_apply_submit() {
 }
 add_action( 'wp_ajax_trs_apply_submit', 'trs_handle_apply_submit' );
 add_action( 'wp_ajax_nopriv_trs_apply_submit', 'trs_handle_apply_submit' );
+
+/**
+ * AJAX: "Book a Free Trial Day" modal submission.
+ */
+function trs_handle_trial_submit() {
+	check_ajax_referer( 'trs_trial_submit', 'nonce' );
+
+	// Honeypot — bots tend to fill every field.
+	if ( ! empty( $_POST['trs_website'] ) ) {
+		wp_send_json_success( array( 'message' => __( 'Thanks! We\'ll be in touch shortly.', '3rspace' ) ) );
+	}
+
+	$name  = trs_get_posted_field( 'name', 100 );
+	$email = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
+	$phone = trs_get_posted_field( 'phone', 40 );
+	$notes = isset( $_POST['notes'] ) ? sanitize_textarea_field( wp_unslash( $_POST['notes'] ) ) : '';
+
+	if ( '' === $name || ! is_email( $email ) ) {
+		wp_send_json_error( array( 'message' => __( 'Please enter a valid name and email address.', '3rspace' ) ), 400 );
+	}
+
+	$to      = trs_notification_email();
+	$subject = sprintf( '[%s] New free trial day request from %s', get_bloginfo( 'name' ), $name );
+
+	$body   = array();
+	$body[] = 'New "Book a Free Trial Day" request:';
+	$body[] = '';
+	$body[] = 'Name: ' . $name;
+	$body[] = 'Email: ' . $email;
+	$body[] = 'Phone: ' . ( '' !== $phone ? $phone : '—' );
+	$body[] = '';
+	$body[] = 'Notes:';
+	$body[] = ( '' !== $notes ? $notes : '—' );
+
+	$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
+	$sent    = wp_mail( $to, $subject, implode( "\n", $body ), $headers );
+
+	if ( ! $sent ) {
+		wp_send_json_error( array( 'message' => __( 'Something went wrong sending your request. Please try again in a moment.', '3rspace' ) ), 500 );
+	}
+
+	wp_send_json_success( array( 'message' => __( 'Thanks! Your trial day request is in — we\'ll email you to confirm a date.', '3rspace' ) ) );
+}
+add_action( 'wp_ajax_trs_trial_submit', 'trs_handle_trial_submit' );
+add_action( 'wp_ajax_nopriv_trs_trial_submit', 'trs_handle_trial_submit' );
 
 /**
  * AJAX: contact page form submission.

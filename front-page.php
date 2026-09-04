@@ -59,7 +59,8 @@ $gallery = array(
 			<h1><?php echo esc_html( trs_opt( 'hero_heading' ) ); ?></h1>
 			<p class="section-lede"><?php echo esc_html( trs_opt( 'hero_lede' ) ); ?></p>
 			<div class="hero__actions">
-				<button type="button" class="btn btn-primary js-open-apply-modal"><?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?></button>
+				<button type="button" class="btn btn-outline js-open-apply-modal"><?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?></button>
+				<button type="button" class="btn btn-primary js-open-trial-modal"><?php echo esc_html( trs_opt( 'trial_button_label' ) ); ?></button>
 				<a class="btn btn-outline" href="#plans"><?php echo esc_html( trs_opt( 'hero_secondary_button_label' ) ); ?></a>
 			</div>
 			<div class="hero__stats">
@@ -147,7 +148,10 @@ $gallery = array(
 					</li>
 				<?php endforeach; ?>
 			</ul>
-			<button type="button" class="btn btn-primary btn-block js-open-apply-modal">
+			<button type="button" class="btn btn-primary btn-block js-open-trial-modal">
+				<?php echo esc_html( trs_opt( 'trial_button_label' ) ); ?>
+			</button>
+			<button type="button" class="btn btn-outline btn-block js-open-apply-modal">
 				<?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?>
 			</button>
 		</div>
@@ -161,7 +165,10 @@ $gallery = array(
 				<h2><?php echo esc_html( trs_opt( 'cta_heading' ) ); ?></h2>
 				<p><?php echo esc_html( trs_opt( 'cta_text' ) ); ?></p>
 			</div>
-			<button type="button" class="btn btn-primary js-open-apply-modal"><?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?></button>
+			<div class="cta-band__actions">
+				<button type="button" class="btn btn-primary js-open-trial-modal"><?php echo esc_html( trs_opt( 'trial_button_label' ) ); ?></button>
+				<button type="button" class="btn btn-outline js-open-apply-modal"><?php echo esc_html( trs_opt( 'apply_button_label' ) ); ?></button>
+			</div>
 		</div>
 	</div>
 </section>

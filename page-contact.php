@@ -65,6 +65,16 @@ $phone_href = preg_replace( '/[^0-9+]/', '', trs_opt( 'business_phone' ) );
 
 				<div class="contact-info__item">
 					<span class="contact-info__icon" aria-hidden="true">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20L5.4 15.6C4.5 14.1 4 12.3 4 10.5C4 5.8 8.3 2 13.5 2C18.7 2 22 5.8 22 10.5C22 15.2 18.7 19 13.5 19C11.9 19 10.4 18.6 9.1 17.9L4 20Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 9.8C9.5 12.5 11.5 14.5 14.2 14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+					</span>
+					<div>
+						<strong><?php esc_html_e( 'WhatsApp', '3rspace' ); ?></strong>
+						<a href="<?php echo esc_url( trs_whatsapp_link() ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Message us directly', '3rspace' ); ?></a>
+					</div>
+				</div>
+
+				<div class="contact-info__item">
+					<span class="contact-info__icon" aria-hidden="true">
 						<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5V12L15 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
 					</span>
 					<div>
@@ -74,10 +84,13 @@ $phone_href = preg_replace( '/[^0-9+]/', '', trs_opt( 'business_phone' ) );
 				</div>
 			</div>
 
-			<div class="map-placeholder">
-				<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 19 14.6 19 9.5C19 5.4 15.9 2.5 12 2.5C8.1 2.5 5 5.4 5 9.5C5 14.6 12 21 12 21Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg>
-				<span><?php esc_html_e( 'Map preview', '3rspace' ); ?></span>
-				<small><?php esc_html_e( 'Swap this block for an embedded Google Map with your real address.', '3rspace' ); ?></small>
+			<div class="map-embed">
+				<iframe
+					src="https://www.google.com/maps?q=<?php echo rawurlencode( trs_opt( 'business_address' ) ); ?>&output=embed"
+					title="<?php esc_attr_e( 'Map showing our location', '3rspace' ); ?>"
+					loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"
+				></iframe>
 			</div>
 		</div>
 

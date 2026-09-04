@@ -2,7 +2,7 @@
 Theme Name: 3RSpace
 Theme URI:
 Author: 3RSpace
-Description: A clean, modern theme for a coworking space — front page, contact page, and an "Apply for a Spot" application modal.
+Description: A clean, modern theme for a coworking space — front page, contact page, and a "Book a Free Trial Day" modal with a WhatsApp option.
 Version: 1.0.0
 Requires at least: 6.0
 Requires PHP: 7.4
@@ -157,6 +157,12 @@ h3 { font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.375rem); }
 .btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
 .section--inverse .btn-outline { color: var(--color-text-inverse); border-color: rgba(244,244,242,0.35); }
 .section--inverse .btn-outline:hover { border-color: var(--color-text-inverse); }
+.btn-whatsapp {
+	background: #25D366;
+	color: #0B3D0F;
+	border-color: #25D366;
+}
+.btn-whatsapp:hover { background: #1EBE59; border-color: #1EBE59; }
 .btn-block { width: 100%; }
 .btn[disabled] { opacity: 0.6; cursor: not-allowed; }
 
@@ -207,7 +213,7 @@ h3 { font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.375rem); }
 }
 .primary-nav__menu a:hover,
 .primary-nav__menu .current-menu-item > a { color: var(--color-text); }
-.site-header__actions { display: flex; align-items: center; gap: var(--space-2); }
+.site-header__actions { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; justify-content: flex-end; }
 .nav-toggle {
 	display: none;
 	background: transparent;
@@ -238,7 +244,7 @@ h3 { font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.375rem); }
 	.primary-nav__menu a { display: block; padding: 0.65rem 0; border-bottom: 1px solid var(--color-border); }
 	.primary-nav__menu li:last-child a { border-bottom: none; }
 	.nav-toggle { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; }
-	.site-header__actions .btn span.btn-label-full { display: none; }
+	.site-header__actions .btn { padding: 0.65rem 1rem; font-size: 0.875rem; }
 }
 
 /* -------------------------------------------------- */
@@ -420,8 +426,11 @@ h3 { font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.375rem); }
 }
 .cta-band h2 { margin-bottom: 0.4rem; }
 .cta-band p { color: rgba(244, 244, 242, 0.78); }
+.cta-band__actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 .cta-band .btn-primary { background: var(--color-on-accent); color: var(--color-accent); border-color: var(--color-on-accent); }
 .cta-band .btn-primary:hover { background: rgba(244,244,242,0.9); }
+.cta-band .btn-outline { color: var(--color-on-accent); border-color: rgba(244,244,242,0.4); }
+.cta-band .btn-outline:hover { border-color: var(--color-on-accent); background: rgba(244,244,242,0.08); }
 
 /* -------------------------------------------------- */
 /* Contact page                                         */
@@ -451,25 +460,20 @@ h3 { font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.375rem); }
 .contact-info__item span, .contact-info__item a { color: var(--color-text-muted); font-size: 0.95rem; }
 .contact-info__item a:hover { color: var(--color-accent); }
 
-.map-placeholder {
+.map-embed {
 	margin-top: var(--space-4);
 	aspect-ratio: 16/9;
 	border-radius: var(--radius-md);
-	border: 1px dashed var(--color-border-strong);
-	background:
-		linear-gradient(rgba(31,58,52,0.05), rgba(31,58,52,0.05)),
-		repeating-linear-gradient(45deg, rgba(31,58,52,0.03) 0 10px, transparent 10px 20px);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 0.35rem;
-	color: var(--color-text-muted);
-	text-align: center;
-	padding: var(--space-3);
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	box-shadow: var(--shadow-sm);
 }
-.map-placeholder svg { color: var(--color-accent); }
-.map-placeholder small { font-size: 0.8rem; }
+.map-embed iframe {
+	width: 100%;
+	height: 100%;
+	border: 0;
+	display: block;
+}
 
 .form-card {
 	background: var(--color-bg-alt);
@@ -558,6 +562,21 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 	margin-bottom: var(--space-3);
 }
 .modal__head p { color: var(--color-text-muted); font-size: 0.925rem; margin-top: 0.35rem; }
+.modal__divider {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	margin-block: var(--space-3);
+	color: var(--color-text-muted);
+	font-size: 0.825rem;
+}
+.modal__divider::before,
+.modal__divider::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+	background: var(--color-border);
+}
 .modal__close {
 	background: transparent;
 	border: 1px solid var(--color-border);

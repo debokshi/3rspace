@@ -15,35 +15,38 @@
 	}
 
 	/* ---------------------------------------------- */
-	/* Apply modal                                      */
+	/* Modals (Apply, Trial booking — any number)       */
 	/* ---------------------------------------------- */
-	var modal = document.getElementById( 'apply-modal' );
 	var lastFocused = null;
+	var openOverlay = null;
 
-	function openModal() {
-		if ( ! modal ) {
+	function openModal( overlay ) {
+		if ( ! overlay ) {
 			return;
 		}
 		lastFocused = document.activeElement;
-		modal.classList.add( 'is-open' );
+		openOverlay = overlay;
+		overlay.classList.add( 'is-open' );
 		document.body.classList.add( 'modal-open' );
-		var dialog = modal.querySelector( '.modal' );
+		var dialog = overlay.querySelector( '.modal' );
 		if ( dialog ) {
 			dialog.focus();
 		}
 		document.addEventListener( 'keydown', onKeydown );
 	}
 
-	function closeModal() {
-		if ( ! modal ) {
+	function closeModal( overlay ) {
+		overlay = overlay || openOverlay;
+		if ( ! overlay ) {
 			return;
 		}
-		modal.classList.remove( 'is-open' );
+		overlay.classList.remove( 'is-open' );
 		document.body.classList.remove( 'modal-open' );
 		document.removeEventListener( 'keydown', onKeydown );
 		if ( lastFocused && typeof lastFocused.focus === 'function' ) {
 			lastFocused.focus();
 		}
+		openOverlay = null;
 	}
 
 	function onKeydown( event ) {
@@ -53,22 +56,32 @@
 	}
 
 	document.querySelectorAll( '.js-open-apply-modal' ).forEach( function ( trigger ) {
-		trigger.addEventListener( 'click', openModal );
+		trigger.addEventListener( 'click', function () {
+			openModal( document.getElementById( 'apply-modal' ) );
+		} );
 	} );
 
-	if ( modal ) {
-		modal.addEventListener( 'click', function ( event ) {
-			if ( event.target === modal ) {
-				closeModal();
+	document.querySelectorAll( '.js-open-trial-modal' ).forEach( function ( trigger ) {
+		trigger.addEventListener( 'click', function () {
+			openModal( document.getElementById( 'trial-modal' ) );
+		} );
+	} );
+
+	document.querySelectorAll( '.modal-overlay' ).forEach( function ( overlay ) {
+		overlay.addEventListener( 'click', function ( event ) {
+			if ( event.target === overlay ) {
+				closeModal( overlay );
 			}
 		} );
-		modal.querySelectorAll( '[data-modal-close]' ).forEach( function ( btn ) {
-			btn.addEventListener( 'click', closeModal );
+		overlay.querySelectorAll( '[data-modal-close]' ).forEach( function ( btn ) {
+			btn.addEventListener( 'click', function () {
+				closeModal( overlay );
+			} );
 		} );
-	}
+	} );
 
 	/* ---------------------------------------------- */
-	/* AJAX form submission (apply + contact)           */
+	/* AJAX form submission (trial booking + contact)   */
 	/* ---------------------------------------------- */
 	function showNote( form, message, isError ) {
 		var note = form.querySelector( '[data-form-note]' );
@@ -136,20 +149,38 @@
 			} );
 	}
 
+	function onModalFormSuccess( form, message ) {
+		var overlay = form.closest( '.modal-overlay' );
+		if ( ! overlay ) {
+			return;
+		}
+		var successEl = overlay.querySelector( '[data-modal-success]' );
+		var successMsg = overlay.querySelector( '[data-modal-success-message]' );
+		if ( successMsg ) {
+			successMsg.textContent = message;
+		}
+		form.style.display = 'none';
+		if ( successEl ) {
+			successEl.classList.add( 'is-visible' );
+		}
+	}
+
 	var applyForm = document.getElementById( 'apply-form' );
 	if ( applyForm && window.TRS ) {
 		applyForm.addEventListener( 'submit', function ( event ) {
 			event.preventDefault();
 			submitForm( applyForm, 'trs_apply_submit', window.TRS.applyNonce, function ( message ) {
-				var successEl = modal.querySelector( '[data-modal-success]' );
-				var successMsg = modal.querySelector( '[data-modal-success-message]' );
-				if ( successMsg ) {
-					successMsg.textContent = message;
-				}
-				applyForm.style.display = 'none';
-				if ( successEl ) {
-					successEl.classList.add( 'is-visible' );
-				}
+				onModalFormSuccess( applyForm, message );
+			} );
+		} );
+	}
+
+	var trialForm = document.getElementById( 'trial-form' );
+	if ( trialForm && window.TRS ) {
+		trialForm.addEventListener( 'submit', function ( event ) {
+			event.preventDefault();
+			submitForm( trialForm, 'trs_trial_submit', window.TRS.trialNonce, function ( message ) {
+				onModalFormSuccess( trialForm, message );
 			} );
 		} );
 	}

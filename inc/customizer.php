@@ -18,10 +18,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 function trs_customizer_fields() {
 	return array(
 
-		// Global — reused across the header, hero, pricing, CTA band, footer, and contact page.
+		// Global — reused across the header, hero, pricing, CTA band, and footer.
 		'apply_button_label' => array(
 			'default' => __( 'Apply for a Spot', '3rspace' ),
-			'label'   => __( 'Apply button label', '3rspace' ),
+			'label'   => __( 'Apply CTA button label', '3rspace' ),
+			'section' => 'trs_sec_global',
+			'type'    => 'text',
+		),
+		'trial_button_label' => array(
+			'default' => __( 'Book a Free Trial Day', '3rspace' ),
+			'label'   => __( 'Trial CTA button label', '3rspace' ),
+			'section' => 'trs_sec_global',
+			'type'    => 'text',
+		),
+		'whatsapp_number' => array(
+			'default' => '15551234567',
+			'label'   => __( 'WhatsApp number (country code + digits, no spaces or +)', '3rspace' ),
+			'section' => 'trs_sec_global',
+			'type'    => 'text',
+		),
+		'whatsapp_message' => array(
+			'default' => __( 'Hi! I\'d like to book a free trial day.', '3rspace' ),
+			'label'   => __( 'WhatsApp pre-filled message', '3rspace' ),
 			'section' => 'trs_sec_global',
 			'type'    => 'text',
 		),
@@ -194,13 +212,23 @@ function trs_opt_lines( $key ) {
 }
 
 /**
- * Where "Apply for a Spot" and contact-form submissions get emailed —
+ * Where the trial-booking and contact-form submissions get emailed —
  * the Customizer notification address, falling back to the site's
  * Settings → General admin email when left blank.
  */
 function trs_notification_email() {
 	$configured = trs_opt( 'notification_email' );
 	return '' !== $configured ? $configured : get_option( 'admin_email' );
+}
+
+/**
+ * A wa.me deep link to the configured WhatsApp number, with the configured
+ * (or a custom) pre-filled message.
+ */
+function trs_whatsapp_link( $message = null ) {
+	$digits  = preg_replace( '/[^0-9]/', '', trs_opt( 'whatsapp_number' ) );
+	$message = null === $message ? trs_opt( 'whatsapp_message' ) : $message;
+	return 'https://wa.me/' . $digits . '?text=' . rawurlencode( $message );
 }
 
 function trs_customize_register( $wp_customize ) {
