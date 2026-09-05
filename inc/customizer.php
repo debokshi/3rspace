@@ -173,6 +173,21 @@ function trs_customizer_fields() {
 		'contact_info_heading' => array( 'default' => __( 'Visit or reach out', '3rspace' ), 'label' => __( 'Info column heading', '3rspace' ), 'section' => 'trs_sec_contact', 'type' => 'text' ),
 		'contact_form_heading' => array( 'default' => __( 'Send a message', '3rspace' ), 'label' => __( 'Form heading', '3rspace' ), 'section' => 'trs_sec_contact', 'type' => 'text' ),
 
+		// About page.
+		'about_eyebrow' => array( 'default' => __( 'Who we are', '3rspace' ), 'label' => __( 'Eyebrow', '3rspace' ), 'section' => 'trs_sec_about', 'type' => 'text' ),
+		'about_heading' => array( 'default' => __( 'About Us', '3rspace' ), 'label' => __( 'Heading', '3rspace' ), 'section' => 'trs_sec_about', 'type' => 'text' ),
+		'about_body'    => array(
+			'default' => implode( "\n\n", array(
+				__( '3Rspace Arbëria is a community and coworking space established by NGO LENS for entrepreneurs, freelancers, remote workers, innovators and anyone interested in using technology to develop ideas, skills and new opportunities.', '3rspace' ),
+				__( 'More than simply a place to work, 3Rspace is designed to bring people together. It offers an accessible, well-equipped environment where members can work independently, exchange knowledge, collaborate on projects and become part of a community built around creativity and entrepreneurship.', '3rspace' ),
+				__( 'The space reflects LENS’s long-standing commitment to promoting technology entrepreneurship, practical learning, innovation and inclusive economic development. Through shared workspaces, professional equipment, workshops and community activities, 3Rspace helps people turn ideas into projects and projects into sustainable opportunities.', '3rspace' ),
+				__( 'By joining 3Rspace, members are not only gaining a desk and access to useful facilities. They are also supporting a community initiative created to advance LENS’s wider social mission and make technology, knowledge and entrepreneurial opportunities more accessible.', '3rspace' ),
+			) ),
+			'label'   => __( 'Body text (blank line between paragraphs)', '3rspace' ),
+			'section' => 'trs_sec_about',
+			'type'    => 'textarea',
+		),
+
 		// Footer.
 		'footer_description' => array(
 			'default' => __( 'A calm, well-equipped coworking space for founders, freelancers, and remote teams.', '3rspace' ),
@@ -231,6 +246,14 @@ function trs_whatsapp_link( $message = null ) {
 	return 'https://wa.me/' . $digits . '?text=' . rawurlencode( $message );
 }
 
+/**
+ * A Google Maps link (opens the full site/app, not the embed) for the
+ * configured business address.
+ */
+function trs_google_maps_link() {
+	return 'https://www.google.com/maps?q=' . rawurlencode( trs_opt( 'business_address' ) );
+}
+
 function trs_customize_register( $wp_customize ) {
 	$wp_customize->add_panel( 'trs_content', array(
 		'title'       => __( '3RSpace Content', '3rspace' ),
@@ -245,6 +268,7 @@ function trs_customize_register( $wp_customize ) {
 		'trs_sec_amenities' => __( 'Front Page — Amenities', '3rspace' ),
 		'trs_sec_pricing'   => __( 'Front Page — Pricing', '3rspace' ),
 		'trs_sec_cta'       => __( 'Front Page — CTA Band', '3rspace' ),
+		'trs_sec_about'     => __( 'About Page', '3rspace' ),
 		'trs_sec_contact'   => __( 'Contact Page', '3rspace' ),
 		'trs_sec_footer'    => __( 'Footer', '3rspace' ),
 	);

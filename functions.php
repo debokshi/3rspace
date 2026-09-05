@@ -65,21 +65,44 @@ function trs_fallback_menu() {
 	echo '<ul class="primary-nav__links">';
 	echo '<li' . ( is_front_page() ? ' class="current-menu-item"' : '' ) . '><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', '3rspace' ) . '</a></li>';
 
+	$about_page = get_page_by_path( 'about' );
+	$about_url  = $about_page ? get_permalink( $about_page ) : home_url( '/about/' );
+	echo '<li' . ( is_page( 'about' ) ? ' class="current-menu-item"' : '' ) . '><a href="' . esc_url( $about_url ) . '">' . esc_html__( 'About', '3rspace' ) . '</a></li>';
+
 	$contact_page = get_page_by_path( 'contact' );
 	$contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/contact/' );
 	echo '<li' . ( is_page( 'contact' ) ? ' class="current-menu-item"' : '' ) . '><a href="' . esc_url( $contact_url ) . '">' . esc_html__( 'Contact', '3rspace' ) . '</a></li>';
+
+	echo '<li><a href="' . esc_url( trs_google_maps_link() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Location', '3rspace' ) . '</a></li>';
 	echo '</ul>';
 }
+
+/**
+ * Appends a "Location" link (opening Google Maps for the configured business
+ * address) to the end of the primary nav menu, so it always reflects the
+ * current Customizer address without needing a static menu item.
+ */
+function trs_add_location_menu_item( $items, $args ) {
+	if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
+		return $items;
+	}
+	$items .= '<li class="menu-item"><a href="' . esc_url( trs_google_maps_link() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Location', '3rspace' ) . '</a></li>';
+	return $items;
+}
+add_filter( 'wp_nav_menu_items', 'trs_add_location_menu_item', 10, 2 );
 
 /**
  * Fallback links when no "Footer Menu" has been assigned in Appearance → Menus.
  * Outputs bare <li> items — the footer supplies its own <ul> wrapper.
  */
 function trs_footer_fallback_menu() {
+	$about_page   = get_page_by_path( 'about' );
+	$about_url    = $about_page ? get_permalink( $about_page ) : home_url( '/about/' );
 	$contact_page = get_page_by_path( 'contact' );
 	$contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/contact/' );
 
 	echo '<li><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', '3rspace' ) . '</a></li>';
+	echo '<li><a href="' . esc_url( $about_url ) . '">' . esc_html__( 'About', '3rspace' ) . '</a></li>';
 	echo '<li><a href="' . esc_url( $contact_url ) . '">' . esc_html__( 'Contact', '3rspace' ) . '</a></li>';
 }
 
